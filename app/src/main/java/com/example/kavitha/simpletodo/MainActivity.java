@@ -1,12 +1,19 @@
 package com.example.kavitha.simpletodo;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -17,15 +24,21 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements TextWatcher {
 
-    ListView lvItems;
+    private ListView lvItems;
     ArrayList<String> items;
     ArrayAdapter<String> itemsAdapter;
+    Button btnAddItems;
+    EditText etNewItem;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        btnAddItems = (Button) findViewById(R.id.btnAddItems);
+        etNewItem = (EditText) findViewById(R.id.eTNewItem);
+        etNewItem.addTextChangedListener(this);
         lvItems = (ListView) findViewById(R.id.lvItems);
         items = new ArrayList<String>();
         readItems();
@@ -36,13 +49,42 @@ public class MainActivity extends ActionBarActivity {
 
     public void setupListViewListener() {
         lvItems.setOnItemLongClickListener(new
-        AdapterView.OnItemLongClickListener() {
+            AdapterView.OnItemLongClickListener() {
+                @Override
+            public boolean onItemLongClick(AdapterView<?> adapter, View item, int pos, long id) {
+                    items.remove(pos);
+                    itemsAdapter.notifyDataSetChanged();
+                    writeItems();
+                    return true;
+                }
+            });
+
+
+
+        lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-        public boolean onItemLongClick(AdapterView<?> adapter, View item, int pos, long id) {
-                items.remove(pos);
-                itemsAdapter.notifyDataSetChanged();
-                writeItems();
-                return true;
+            public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+
+                LayoutInflater inflater = MainActivity.this.getLayoutInflater();
+                View dialogView = inflater.inflate(R.layout.edit_dialog, null);
+                final EditText etEditItem = (EditText) dialogView.findViewById(R.id.etEditItem);
+                etEditItem.setText(items.get(i));
+                builder.setView(dialogView)
+                    .setPositiveButton(getString(R.string.btn_save), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // save edited value
+                            items.set(i, etEditItem.getText().toString());
+                            writeItems();
+                            itemsAdapter.notifyDataSetChanged();
+                        }
+                    })
+                    .setNegativeButton(getString(R.string.btn_cancel), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // User cancelled the dialog
+                        }
+                    });
+                builder.create().show();
             }
         });
     }
@@ -70,10 +112,12 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void onAddItem(View v){
-        EditText etNewItem = (EditText) findViewById(R.id.eTNewItem);
-        String newTodoItem = etNewItem.getText().toString();
-        itemsAdapter.add(newTodoItem);
-        writeItems();
+
+        String newTodoItem = etNewItem.getText().toString().trim();
+        if (newTodoItem.length() > 0) {
+            itemsAdapter.add(newTodoItem);
+            writeItems();
+        }
         etNewItem.setText("");
     }
 
@@ -97,5 +141,20 @@ public class MainActivity extends ActionBarActivity {
         catch(IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+//      Nothing to do
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+        btnAddItems.setEnabled(!TextUtils.isEmpty(charSequence));
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+//      Nothing to do
     }
 }

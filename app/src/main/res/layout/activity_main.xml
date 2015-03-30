@@ -10,6 +10,7 @@
         android:layout_height="wrap_content"
         android:text="Add"
         android:id="@+id/btnAddItems"
+        android:enabled="false"
         android:onClick="onAddItem"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true" />
