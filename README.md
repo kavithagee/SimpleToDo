@@ -9,4 +9,6 @@ SimpleToDo app usage
 
 
 I will be making future changes to the UI, adding features to the app and will try SQLlite for storage.  
+SimpleToDo Gif: 
+![alt tag] (https://raw.githubusercontent.com/kavithagee/SimpleToDo/master/kavitha_simpletodo.gif)
 
