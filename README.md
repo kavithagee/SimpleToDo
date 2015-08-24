@@ -10,3 +10,5 @@ SimpleToDo app usage
 * color-coded todo items
 * daily, weekly and monthly notifications to look at the todoitems
 
++![alt tag] (https://raw.githubusercontent.com/kavithagee/SimpleToDo/master/kavitha_simpletodo.gif)
++![alt tag] (https://raw.githubusercontent.com/kavithagee/SimpleToDo/master/kavitha_simpletodo_notification.gif)
