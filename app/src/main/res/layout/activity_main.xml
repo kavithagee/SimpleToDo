@@ -21,7 +21,8 @@
         android:id="@+id/eTNewItem"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_toStartOf="@+id/btnAddItems" />
+        android:layout_toStartOf="@+id/btnAddItems"
+        android:hint="@string/et_add_hint"/>
 
     <ListView
         android:layout_width="wrap_content"

@@ -7,4 +7,9 @@
     <string name="btn_save">Save</string>
     <string name="btn_cancel">Cancel</string>
     <string name="tv_edit_item">Edit ToDo Item</string>
+    <string name="et_add_hint">Add a new item</string>
+    <string name="day">day</string>
+    <string name="rd_week">week</string>
+    <string name="rd_month">month</string>
+    <string name="rd_day">day</string>
 </resources>
